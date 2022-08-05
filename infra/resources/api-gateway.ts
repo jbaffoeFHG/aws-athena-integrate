@@ -26,7 +26,7 @@ export default class ApiGateway {
         path: string, 
         method: awsx.apigateway.Method, 
         args: ApiAddEndpointArgs = {}) {
-        const authorizers = args.authorizerNone? []: [this.lambdaAuthorizer];
+        const authorizers = args.authorizerNone? []: (args.customLambdaAuthorizer? [args.customLambdaAuthorizer]: this.lambdaAuthorizer);
         this.routes.push({
             path,
             method,

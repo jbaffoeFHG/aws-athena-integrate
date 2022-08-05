@@ -1,5 +1,6 @@
 import * as aws from "@pulumi/aws";
 import * as pulumi from "@pulumi/pulumi";
+import {LambdaAuthorizer} from "@pulumi/awsx/apigateway";
 
 export interface LambdaCreateArgs {
     handlerPath: string; // handle file or handler dir path
@@ -18,6 +19,7 @@ export interface LambdaCreateArgs {
 
 export interface ApiAddEndpointArgs {
     authorizerNone?: boolean;
+    customLambdaAuthorizer?: LambdaAuthorizer;
 }
 
 export interface EventRuleCreateArgs {

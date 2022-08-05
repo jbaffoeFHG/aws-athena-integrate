@@ -20,7 +20,7 @@ exports.handler = async function (event, context) {
         const resourcePath = event.resource;
         const httpMethod = event.httpMethod;
 
-        if (resourcePath === RESOURCE_PATH && httpMethod === "POST") {
+        if (httpMethod === "POST") {
             const request = getRequestBody(event);
             const command = new StartQueryExecutionCommand({
                 QueryString: request.queryString,
