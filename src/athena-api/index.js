@@ -29,7 +29,7 @@ exports.handler = async function (event, context) {
                     Database: request.database
                 },
                 ResultConfiguration: {
-                    OutputLocation: request.outputLocation
+                    OutputLocation: request.outputLocation || process.env.ATHENA_OUTPUT_LOCATION
                 }
             });
             const response = await athenaClient.send(command);
