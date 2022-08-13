@@ -1,20 +1,31 @@
-exports.handler = async function (event, context, callback) {
-    console.time("auth-process");
-    console.log("event", JSON.stringify(event));
-    try {
-        const apiKey = event.headers['apikey'];
-        if (process.env.API_KEY === apiKey) {
-            const username = 'api';
-            callback(null, generatePolicy(username, 'Allow', event.methodArn, { username }));
-        } else {
-            throw new Error(`invalid apikey ${apiKey}`);
-        }
+const {
+    SecretsManagerClient,
+    GetSecretValueCommand
+} = require("@aws-sdk/client-secrets-manager");
+const jwt = require('jsonwebtoken');
 
-    } catch (err) {
+const secretsManagerClient = new SecretsManagerClient();
+exports.handler = async function (event, context, callback) {
+    console.log("event", event);
+    console.log("context", context);
+
+    try {
+        const token = event.headers['apikey'];
+        const claims = jwt.verify(token, process.env.ACCESS_KEY_SECRET);;
+        const { customerId, ref, key } = claims;
+
+        const secretArn = `arn:aws:secretsmanager:${process.env.AWS_REGION}:${process.env.AWS_ACCOUNT_ID}:secret:${ref}`;
+        const command = new GetSecretValueCommand({ SecretId: secretArn});
+        const { SecretString } = await secretsManagerClient.send(command);
+        if (SecretString === key) {
+            callback(null, generatePolicy(customerId, 'Allow', event.methodArn, { customerId }));
+        } else {
+            callback(null, generatePolicy(null, 'Deny', event.methodArn, {}));
+        }
+    } catch(err) {
         console.error("token validation failed", err);
-        callback(null, generatePolicy(null, 'Deny', event.methodArn, {}));
+        callback("Error: Invalid token");
     }
-    console.timeEnd("auth-process");
 };
 
 const generatePolicy = function (principalId, effect, resource, claims) {

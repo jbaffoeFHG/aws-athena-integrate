@@ -19,7 +19,7 @@ export default class AthenaApiStack {
         this.projectConfig = new ProjectConfig();
 
         const envVariables: any = {};
-        envVariables['TEST'] = 'test';
+        envVariables['ATHENA_OUTPUT_LOCATION'] = '';
 
         const apiKeyAuth = awsx.apigateway.getRequestLambdaAuthorizer({
             authorizerName: getResourceName('apik-authorizer'),

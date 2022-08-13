@@ -10,6 +10,7 @@ const SK_FIELD = 'sk';
 export default class Dynamodb {
     private readonly _projectConfig: ProjectConfig;
     private readonly _usersApiTable: aws.dynamodb.Table;
+    private readonly _accessKeyTable: aws.dynamodb.Table;
 
     constructor() {
         this._projectConfig = new ProjectConfig();
@@ -24,6 +25,7 @@ export default class Dynamodb {
                 name: 'email',
                 type: "S",
         }]);
+        this._accessKeyTable = this._createTable("access-key");
     }
 
     private _createTable(
@@ -67,5 +69,9 @@ export default class Dynamodb {
 
     public get usersApiTable() {
         return this._usersApiTable;
+    }
+
+    public get accessKeyTable() {
+        return this._accessKeyTable;
     }
 }

@@ -7,6 +7,7 @@ import CognitoTriggersStack from "./resources/lambda/cognito-triggers-stack";
 import AthenaApiStack from "./resources/lambda/athena-api-stack";
 import UsersApiStack from "./resources/lambda/users-api-stack";
 import ApiKeyAuthorizer from "./resources/lambda/api-key-authorizer";
+import AccessKeyApiStack from "./resources/lambda/accesskey-api-stack";
 
 const dynamodb = new Dynamodb();
 const lambdaLayers = new LambdaLayers();
@@ -19,6 +20,7 @@ const apiKeyAuthorizerLambda = new ApiKeyAuthorizer()
 const apiGateway = new ApiGateway(authorizerLambda);
 
 new UsersApiStack(apiGateway, lambdaLayers, dynamodb.usersApiTable, cognito.userPool)
+new AccessKeyApiStack(apiGateway, lambdaLayers, dynamodb.accessKeyTable)
 new AthenaApiStack(apiGateway, lambdaLayers, apiKeyAuthorizerLambda)
 
 apiGateway.deploy();

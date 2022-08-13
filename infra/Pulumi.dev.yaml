@@ -13,3 +13,6 @@ config:
   project:auth:
     authorizedResources: /apps/{appId},
     authorizerFunc: authorizer-api
+  project:accessKey:
+    prefix: athena-demo
+    secret: 1qaz2wsx

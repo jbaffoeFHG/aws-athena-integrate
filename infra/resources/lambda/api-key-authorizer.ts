@@ -1,7 +1,8 @@
 import * as aws from "@pulumi/aws";
 import { LambdaConstructor } from "../../helpers/constructors/lambda-constructor";
-import Cognito from "../cognito";
 import {ProjectConfig} from "../../config/project-config";
+import {ACCESS_KEY_SECRET} from "../../consts/common-consts";
+import {addToRolePolicy} from "../../helpers/utils/iam-utils";
 
 export default class ApiKeyAuthorizer {
     private readonly _authorizerLambda: aws.lambda.Function;
@@ -10,12 +11,20 @@ export default class ApiKeyAuthorizer {
         const projectConfig = new ProjectConfig();
 
         const envVariables: any = {};
-        envVariables["API_KEY"] = '98da1233-c2c5-4abf-9956-13952c47e204';
+        envVariables["AWS_ACCOUNT_ID"] = projectConfig.accountId;
+        envVariables[ACCESS_KEY_SECRET] = projectConfig.accessKeyConfig.secret;
 
-        this._authorizerLambda = new LambdaConstructor("apik-authorizer", {
+        const _authorizerLambdaConstructor = new LambdaConstructor("apik-authorizer", {
             handlerPath: "api-key-authorizer",
             envVariables
-        }).lambdaFunc;
+        });
+
+        this._authorizerLambda = _authorizerLambdaConstructor.lambdaFunc;
+
+        addToRolePolicy("apik-auth-sec", _authorizerLambdaConstructor.role, [
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret"
+        ], `arn:aws:secretsmanager:*:${projectConfig.accountId}:secret:*`);
     }
 
     public get authorizerLambda() {
