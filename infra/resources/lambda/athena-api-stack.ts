@@ -22,7 +22,7 @@ export default class AthenaApiStack {
         envVariables['ATHENA_OUTPUT_LOCATION'] = '';
 
         const apiKeyAuth = awsx.apigateway.getRequestLambdaAuthorizer({
-            authorizerName: getResourceName('apik-authorizer'),
+            authorizerName: getResourceName('apik-auth'),
             handler: apiKeyAuthorizer.authorizerLambda,
             headers: ['apikey'],
             authorizerResultTtlInSeconds: 0 // disable cache
