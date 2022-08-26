@@ -14,7 +14,7 @@ export default class ApiKeyAuthorizer {
         envVariables["AWS_ACCOUNT_ID"] = projectConfig.accountId;
         envVariables[ACCESS_KEY_SECRET] = projectConfig.accessKeyConfig.secret;
 
-        const _authorizerLambdaConstructor = new LambdaConstructor("apik-authorizer", {
+        const _authorizerLambdaConstructor = new LambdaConstructor("authfn", {
             handlerPath: "api-key-authorizer",
             envVariables
         });
