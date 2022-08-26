@@ -21,7 +21,7 @@ export default class ApiKeyAuthorizer {
 
         this._authorizerLambda = _authorizerLambdaConstructor.lambdaFunc;
 
-        addToRolePolicy("apik-auth-sec", _authorizerLambdaConstructor.role, [
+        addToRolePolicy("authfn-sec", _authorizerLambdaConstructor.role, [
             "secretsmanager:GetSecretValue",
             "secretsmanager:DescribeSecret"
         ], `arn:aws:secretsmanager:*:${projectConfig.accountId}:secret:*`);
