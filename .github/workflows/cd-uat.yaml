@@ -5,7 +5,7 @@ on:
       - uat
 
 env:
-  DEPLOY_ENV: "dev"
+  DEPLOY_ENV: "uat"
   AWS_DEFAULT_REGION: "us-west-1"
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID_DEV }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
