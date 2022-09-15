@@ -1,4 +1,4 @@
-name: dev deployment
+name: uat deployment
 on:
   push:
     branches:
