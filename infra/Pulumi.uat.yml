@@ -1,0 +1,18 @@
+config:
+  aws:allowedAccountIds:
+  - 114190052706
+  aws:region: us-west-1
+  project:apigateway:
+    accessControlAllowHeaders: Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token
+    accessControlAllowMethods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+    accessControlAllowOrigin: '*'
+  project:apigatewayRoute:
+    domain: VAR
+    domainCertArn: VAR
+    hostedZoneId: VAR
+  project:auth:
+    authorizedResources: /apps/{appId},
+    authorizerFunc: authorizer-api
+  project:accessKey:
+    prefix: athena-demo
+    secret: 1qaz2wsx
